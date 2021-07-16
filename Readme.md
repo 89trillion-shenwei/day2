@@ -15,25 +15,28 @@
 ## 2.目录结构
 
 ```
+
 .
 ├── Readme.md
 ├── __pycache__
 │   └── locustfile.cpython-39.pyc
 ├── app
-│   ├── app
-│   ├── http1
+│   ├── Service
 │   │   └── httpServer.go
-│   └── main.go
+│   ├── app
+│   ├── main.go
+│   └── model
+│       └── stack.go
 ├── day2压力测试.html
 ├── go.mod
 ├── go.sum
 ├── internal
 │   ├── ctrl
-│   │   ├── counter.go
-│   │   ├── counter_test.go
-│   │   └── stack.go
-│   ├── handler
 │   │   └── handler.go
+│   ├── globalError.go
+│   ├── handler
+│   │   ├── counter.go
+│   │   └── counter_test.go
 │   └── router
 │       └── router.go
 ├── locustfile.py
@@ -41,17 +44,20 @@
 
 
 
+
 ```
 
 ## 3.代码逻辑分层
 
-| 层        | 文件夹                       | 主要职责           | 调用关系                  | 其他说明     |
-| --------- | ---------------------------- | ------------------ | ------------------------- | ------------ |
-| 应用层    | /app/http1/httpServer.go     | 服务器启动         | 调用路由层                | 不可同层调用 |
-| 路由层    | /internal/router/router.go   | 路由转发           | 被应用层调用，调用控制层  | 不可同层调用 |
-| 控制层    | /internal/ctrl/counter.go    | 请求参数处理，响应 | 被路由层调用，调用handler | 不可同层调用 |
-| handler层 | /internal/handler/handler.go | 处理具体业务       | 被控制层调用              | 不可同层调用 |
-| 压力测试  | locustfile.py                | 进行压力测试       | 无调用关系                | 不可同层调用 |
+| 层        | 文件夹                            | 主要职责           | 调用关系                    | 其他说明     |
+| --------- | --------------------------------- | ------------------ | --------------------------- | ------------ |
+| 应用层    | /app/app                          | 服务器启动         | 调用service层               | 不可同层调用 |
+| 路由层    | /internal/router/router.go        | 路由转发           | 被service层调用，调用控制层 | 不可同层调用 |
+| 控制层    | /internal/ctrl/counter.go         | 请求参数处理，响应 | 被路由层调用，调用handler   | 不可同层调用 |
+| handler层 | /internal/handler/handler.go      | 处理具体业务       | 被控制层调用                | 不可同层调用 |
+| 压力测试  | locustfile.py                     | 进行压力测试       | 无调用关系                  | 不可同层调用 |
+| service层 | /app/Service/httpService.go       | 启动路由           | 被应用层调用，调用路由层    | 不可同层调用 |
+| 单元测试  | /internal/handler/counter_test.go | 进行单元测试       | 无调用关系                  | 不可同层调用 |
 
 
 
@@ -92,6 +98,18 @@ Http GET
 
 ## 7.如何编译执行
 
+cd app
+
+go build
+
+./app
+
+编译为可执行文件
+
+cd internal
+
+cd handler
+
 go test
 
 单元测试
@@ -99,10 +117,6 @@ go test
 locust 
 
 压力测试
-
-go build
-
-编译为可执行文件
 
 ## 8、todo
 

@@ -1,13 +1,13 @@
 package router
 
 import (
-	handler2 "day2/internal/handler"
+	"day2/internal/ctrl"
 	"github.com/gin-gonic/gin"
 )
 
 func InitRouter() *gin.Engine {
-	router :=gin.Default()
+	router := gin.Default()
 
-	router.GET("/Counter", handler2.CountApi)
+	router.GET("/Counter", ctrl.CountApi)
 	return router
 }

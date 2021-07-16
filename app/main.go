@@ -1,14 +1,7 @@
 package main
 
-import (
-	http12 "day2/app/http1"
-)
+import "day2/app/Service"
 
-func main()  {
-	http12.Start()
-	//fmt.Println(ctrl.Couter(ctrl.Analy("323+232*132")))
+func main() {
+	Service.Start()
 }
-
-
-
-
