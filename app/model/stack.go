@@ -13,21 +13,27 @@ type Stack interface {
 	Size() int     //获取栈的元素个数
 }
 
+//栈内存string类型的数据
 type sliceEntry struct {
 	element []string
 }
 
+// NewSliceEntry 新建栈
 func NewSliceEntry() *sliceEntry {
 	return &sliceEntry{}
 }
+
+// Size 获取栈的元素个数
 func (entry *sliceEntry) Size() int {
 	return len(entry.element)
 }
 
+// Push 向栈顶添加元素
 func (entry *sliceEntry) Push(e string) {
 	entry.element = append(entry.element, e)
 }
 
+// Pop 移除栈顶元素
 func (entry *sliceEntry) Pop() string {
 	size := entry.Size()
 	if size == 0 {
@@ -40,6 +46,7 @@ func (entry *sliceEntry) Pop() string {
 	return lastElement
 }
 
+// Top 获取栈顶元素（不删除）
 func (entry *sliceEntry) Top() string {
 	size := entry.Size()
 	if size == 0 {

@@ -62,7 +62,7 @@ func Analy(s string) (ee1, ee2 model.Stack) {
 	return e1, e2
 }
 
-// Couter 计算
+// Couter 计算方法
 func Couter(e1, e2 model.Stack) int {
 	len1 := e1.Size()
 	e3 := model.NewSliceEntry()
@@ -94,6 +94,7 @@ func Couter(e1, e2 model.Stack) int {
 			e3.Push(e1.Pop())
 		}
 	}
+	//将栈内数据更改为正确的顺序
 	e5 := A2B(e3)
 	e6 := A2B(e4)
 	len2 := e5.Size()
