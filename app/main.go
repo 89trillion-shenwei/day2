@@ -1,7 +1,7 @@
 package main
 
-import "day2/app/Service"
+import "day2/app/http"
 
 func main() {
-	Service.Start()
+	http.Start()
 }

@@ -8,6 +8,6 @@ import (
 func InitRouter() *gin.Engine {
 	router := gin.Default()
 
-	router.GET("/Counter", ctrl.CountApi)
+	router.POST("/Counter", ctrl.ReturnData(ctrl.CountApi))
 	return router
 }

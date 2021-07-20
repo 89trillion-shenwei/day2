@@ -2,6 +2,7 @@ package handler
 
 import (
 	"day2/app/model"
+	"day2/internal"
 	"strconv"
 	"strings"
 )
@@ -14,8 +15,15 @@ func sortString(s string) bool {
 	return true
 }
 
+func sortNum(b byte) bool {
+	if b >= 48 && b <= 57 {
+		return true
+	}
+	return false
+}
+
 // Analy 解析字符串，运算符入一个栈，数字合到一起在进一个栈
-func Analy(s string) (ee1, ee2 model.Stack) {
+func Analy(s string) (ee1, ee2 model.Stack, err error) {
 	s = strings.Replace(s, " ", "", -1)
 	e1 := model.NewSliceEntry()
 	e2 := model.NewSliceEntry()
@@ -27,17 +35,17 @@ func Analy(s string) (ee1, ee2 model.Stack) {
 		if sortString(k) {
 			//连续两个运算符，或者运算符在首位或者尾位会报错
 			if tmp == 1 || i == 0 || i == len(s)-1 {
-				panic("字符串格式不正确")
+				return nil, nil, internal.IllegalExpressionError("非法的表达式")
 			}
 			e1.Push(k)
-		} else {
+		} else if sortNum(s[i]) {
 			ee := model.NewSliceEntry()
 			ee.Push(k)
+			tmp = 0
 			for j := i - 1; j >= 0; j-- {
-				if !sortString(string(s[j])) {
+				if sortNum(s[j]) {
 					//if s[j]>=48&&s[j]<=57 {
 					ee.Push(string(s[j]))
-					tmp = 0
 					if j == 0 {
 						i = -1
 						break
@@ -57,13 +65,19 @@ func Analy(s string) (ee1, ee2 model.Stack) {
 				}
 				e2.Push(s)
 			}
+		} else {
+			return nil, nil, internal.IllegalExpressionError("有非法符号")
 		}
 	}
-	return e1, e2
+	return e1, e2, nil
 }
 
 // Couter 计算方法
 func Couter(e1, e2 model.Stack) int {
+	if e1.Size() == 0 {
+		in, _ := strconv.Atoi(e2.Top())
+		return in
+	}
 	len1 := e1.Size()
 	e3 := model.NewSliceEntry()
 	e4 := model.NewSliceEntry()
@@ -94,6 +108,7 @@ func Couter(e1, e2 model.Stack) int {
 			e3.Push(e1.Pop())
 		}
 	}
+	e4.Push(e2.Pop())
 	//将栈内数据更改为正确的顺序
 	e5 := A2B(e3)
 	e6 := A2B(e4)
