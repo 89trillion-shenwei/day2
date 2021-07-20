@@ -1,4 +1,4 @@
-package Service
+package http
 
 import (
 	router2 "day2/internal/router"
