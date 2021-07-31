@@ -1,18 +1,17 @@
 package handler
 
 import (
-	"day2/app/model"
 	"day2/internal"
+	model2 "day2/internal/model"
 	"strconv"
-	"strings"
 )
 
 //区分是不是运算符
 func sortString(s string) bool {
-	if s != "+" && s != "-" && s != "*" && s != "/" {
-		return false
+	if s == "+" || s == "-" || s == "*" || s == "/" {
+		return true
 	}
-	return true
+	return false
 }
 
 func sortNum(b byte) bool {
@@ -23,10 +22,9 @@ func sortNum(b byte) bool {
 }
 
 // Analy 解析字符串，运算符入一个栈，数字合到一起在进一个栈
-func Analy(s string) (ee1, ee2 model.Stack, err error) {
-	s = strings.Replace(s, " ", "", -1)
-	e1 := model.NewSliceEntry()
-	e2 := model.NewSliceEntry()
+func Analy(s string) (e1, e2 model2.Stack, err error) {
+	//e1 := model.NewSliceEntry()
+	//e2 := model.NewSliceEntry()
 	//判断字符串中会不会连续出现两个以上的运算符，tmp=1说明上次入栈的是运算符
 	var tmp int = 1
 	for i := len(s) - 1; i >= 0; i-- {
@@ -39,7 +37,7 @@ func Analy(s string) (ee1, ee2 model.Stack, err error) {
 			}
 			e1.Push(k)
 		} else if sortNum(s[i]) {
-			ee := model.NewSliceEntry()
+			ee := model2.NewSliceEntry()
 			ee.Push(k)
 			tmp = 0
 			for j := i - 1; j >= 0; j-- {
@@ -73,14 +71,14 @@ func Analy(s string) (ee1, ee2 model.Stack, err error) {
 }
 
 // Couter 计算方法
-func Couter(e1, e2 model.Stack) int {
+func Couter(e1, e2 model2.Stack) int {
 	if e1.Size() == 0 {
 		in, _ := strconv.Atoi(e2.Top())
 		return in
 	}
 	len1 := e1.Size()
-	e3 := model.NewSliceEntry()
-	e4 := model.NewSliceEntry()
+	e3 := model2.NewSliceEntry()
+	e4 := model2.NewSliceEntry()
 	//先算乘除
 	for j := 0; j < len1; j++ {
 		var sum int
@@ -133,9 +131,9 @@ func Couter(e1, e2 model.Stack) int {
 }
 
 // A2B 将栈里的数据逆序
-func A2B(e model.Stack) model.Stack {
+func A2B(e model2.Stack) model2.Stack {
 	len := e.Size()
-	e1 := model.NewSliceEntry()
+	e1 := model2.NewSliceEntry()
 	for i := 0; i < len; i++ {
 		e1.Push(e.Pop())
 	}

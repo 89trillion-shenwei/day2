@@ -15,12 +15,10 @@ func CountApi(c *gin.Context) (string, error) {
 	if s == "" {
 		return "", internal.IsEmptyError("表达式不能为空")
 	}
-
-	e1, e2, err := handler.Analy(s)
-	if err != nil {
-		return "", internal.IllegalExpressionError(err.Error())
+	if !handler.StringIslegal(s) {
+		return "", internal.IllegalExpressionError("字符串格式不对")
 	}
-	str := strconv.Itoa(handler.Couter(e1, e2))
+	str := strconv.Itoa(handler.Calculate(handler.Infix2ToPostfix(handler.Str2Strs(s))))
 	return str, nil
 }
 
