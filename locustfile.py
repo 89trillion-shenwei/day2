@@ -6,4 +6,4 @@ class WebsiteUser(HttpUser):
 
     @task
     def index1(self):
-        self.client.get("/Counter?string=323+232*132")
+        self.client.post("/Counter",{"string":"323+243/323*2324"})
