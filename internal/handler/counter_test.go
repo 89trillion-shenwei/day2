@@ -4,16 +4,12 @@ import (
 	"testing"
 )
 
-func TestCouter(t *testing.T) {
-	s := "1+1"
-	e1, e2, err := Analy(s)
-	if err != nil {
-		t.Log(err.Error())
-		t.Error("failed")
-	}
-	ret := Couter(e1, e2)
+
+func TestCalculate(t *testing.T) {
+	s := "324+24*3243/100"
+	ret := Calculate(Infix2ToPostfix(Str2Strs(s)))
 	var a int
-	a = 2
+	a = 1102
 	if ret == a {
 		t.Log("succes")
 	} else {
